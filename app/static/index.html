@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Domain Q&A Chatbot</title>
+    <style>
+        body { font-family: sans-serif; max-width: 600px; margin: 2rem auto; padding: 0 1rem; }
+        #chat-box { border: 1px solid #ddd; padding: 1rem; height: 400px; overflow-y: scroll; margin-bottom: 1rem; }
+        .user { color: blue; font-weight: bold; }
+        .bot { color: green; }
+        input { width: 70%; padding: 10px; }
+        button { padding: 10px; width: 20%; }
+    </style>
+</head>
+<body>
+    <h2>Ask me about [YOUR TOPIC]</h2>
+    <div id="chat-box"></div>
+    <input type="text" id="message" placeholder="Type a question..." />
+    <button onclick="sendMessage()">Send</button>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("message");
+            const box = document.getElementById("chat-box");
+            const text = input.value;
+            if (!text) return;
+
+            // Display user message
+            box.innerHTML += `<p class="user">You: ${text}</p>`;
+            input.value = "";
+
+            try {
+                const res = await fetch("/chat", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ message: text })
+                });
+                const data = await res.json();
+                box.innerHTML += `<p class="bot">Bot: ${data.response}</p>`;
+            } catch (e) {
+                box.innerHTML += `<p class="error">Error connecting to server.</p>`;
+            }
+            box.scrollTop = box.scrollHeight;
+        }
+    </script>
+</body>
+</html>
