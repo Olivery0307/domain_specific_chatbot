@@ -4,7 +4,7 @@
 
 A domain-specific chatbot that answers HR and people analytics questions, enforces strict scope boundaries, and handles distressed users safely. Built with FastAPI + Gemini on Vertex AI, deployed on Google Cloud Run.
 
-**Live URL:** https://hr-advisor-ixylabcy6a-uc.a.run.app/static/index.html
+[**Live URL Link**](https://hr-advisor-ixylabcy6a-uc.a.run.app/static/index.html)
 
 ## What It Does
 
