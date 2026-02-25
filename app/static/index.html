@@ -195,6 +195,10 @@
             margin-bottom: 0.25rem;
         }
 
+        .bubble p {
+            margin: 0.5rem 0 0.2rem 0;
+        }
+
         /* Typing indicator */
         .typing .bubble {
             padding: 0.75rem 1.2rem;
@@ -328,7 +332,10 @@
 
         function markdownToHtml(text) {
             return text
-                // Bold: **text**
+                // Standalone heading lines: a line that is entirely **text** (with optional colon)
+                // Must come before bullet replacement so these don't get caught as bullets
+                .replace(/^\*\*(.+?)\*\*\s*$/gm, '<p><strong>$1</strong></p>')
+                // Bold inline: **text** inside a line (not a standalone heading)
                 .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
                 // Bullet points: lines starting with * or -
                 .replace(/^\s*[\*\-]\s+(.+)/gm, '<li>$1</li>')
