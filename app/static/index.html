@@ -332,12 +332,13 @@
 
         function markdownToHtml(text) {
             return text
-                // Standalone heading lines: a line that is entirely **text** (with optional colon)
-                // Must come before bullet replacement so these don't get caught as bullets
+                // Standalone heading: entire line is **text** (no leading bullet)
                 .replace(/^\*\*(.+?)\*\*\s*$/gm, '<p><strong>$1</strong></p>')
-                // Bold inline: **text** inside a line (not a standalone heading)
+                // Bullet where content is ONLY bold (e.g. "* **Accrual Methods:**") → render as heading, no dot
+                .replace(/^\s*[\*\-]\s+\*\*(.+?)\*\*\s*$/gm, '<p><strong>$1</strong></p>')
+                // Bold inline within normal bullet lines
                 .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-                // Bullet points: lines starting with * or -
+                // Normal bullet points with content after the bold
                 .replace(/^\s*[\*\-]\s+(.+)/gm, '<li>$1</li>')
                 // Wrap consecutive <li> in <ul>
                 .replace(/(<li>.*<\/li>)/gs, '<ul>$1</ul>')
